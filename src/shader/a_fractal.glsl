@@ -107,6 +107,7 @@ precision mediump float;
 uniform vec2 resolution;
 uniform float time;
 uniform vec2 camera;
+uniform vec2 u_mouse;
 // sd sphere
 float sdSphere(vec3 p, float s) {
 	return length(p) - s;
@@ -231,7 +232,8 @@ float map2(vec3 p) {
 
 void main() {
 	vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / resolution.y;
-	vec2 mouse = (camera.xy * 2.0 - resolution.xy) / resolution.y;
+	// vec2 mouse = (camera.xy * 2.0 - resolution.xy) / resolution.y;
+	vec2 mouse = (u_mouse.xy * 2.0 - resolution.xy) / resolution.y;
 
     //smooth camera zoom
 	mouse *= 1.0 - exp(-abs(mouse) * 2.0);
@@ -254,7 +256,7 @@ void main() {
 	rd.xz *= rot(-mouse.x * 1.5);
 
     // ray marching
-	for(int i = 0; i < 100; i++) {
+	for (int i = 0; i < 100; i++) {
 		vec3 p = ro + rd * t;
 
 		p.yx *= rot(.5);
@@ -263,9 +265,9 @@ void main() {
 
 		t += d;
         // col = vec3(i) / 80.0;
-		if(d < 0.001)
+		if (d < 0.001)
 			break;
-		if(t > 1000.0)
+		if (t > 1000.0)
 			break;
 	}
 

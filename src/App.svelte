@@ -45,7 +45,7 @@
     const uniforms = {
       resolution: { value: { x: null, y: null } },
       time: { value: 0.0 },
-      // u_mouse: { value: { x: null, y: null } },
+      u_mouse: { value: { x: null, y: null } },
       viewMatrix: { value: camera.matrixWorldInverse },
       cameraPositionX: { value: 0.0 },
       cameraPositionY: { value: 0.0 },
@@ -57,8 +57,8 @@
       uniforms.resolution.value.y = window.innerHeight;
     }
     document.onmousemove = function (e) {
-      // uniforms.u_mouse.value.x = e.pageX;
-      // uniforms.u_mouse.value.y = e.pageY;
+      uniforms.u_mouse.value.x = e.pageX;
+      uniforms.u_mouse.value.y = e.pageY;
     };
 
     const axesHelper = new THREE.AxesHelper();
@@ -76,16 +76,10 @@
       vertexShader: vertex,
       fragmentShader: fragment,
     });
-    new THREE.MeshNormalMaterial();
-    // const cube = new THREE.Mesh(geometry, material);
-    // scene.add(cube, axesHelper);
 
     // add a plane under the cube
     const planeGeometry = new THREE.PlaneGeometry(32, 32, 32, 32);
-    const planeMaterial = new THREE.MeshBasicMaterial({
-      color: "grey",
-      side: THREE.DoubleSide,
-    });
+
     const plane = new THREE.Mesh(planeGeometry, material);
 
     // Assuming planeWidth and planeHeight are both 32
@@ -95,16 +89,6 @@
     const scaleX = window.innerWidth / 10 / planeSize;
     const scaleY = window.innerHeight / 10 / planeSize;
     plane.scale.set(scaleX, scaleY, 1);
-    console.log(
-      "x",
-      plane.scale.x,
-      "y",
-      plane.scale.y,
-      "width",
-      window.innerWidth,
-      "height",
-      window.innerHeight,
-    );
     scene.add(plane);
 
     const controls = new OrbitControls(camera, renderer.domElement);
